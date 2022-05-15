@@ -51,7 +51,7 @@ $('.submit').on("click", function (event) {
     event.preventDefault();
     if (!validate()) return;
     const {x, y, r} = getData();
-    doRequest(x, y, r);
+    doRequest(x, y, r, false);
 });
 
 function getData() {

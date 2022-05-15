@@ -11,8 +11,8 @@ function calculateY(y, r) {
     // return Math.floor(SVG_SIZE / 2 + y / r * -100);
 }
 
-function doRequest(x, y, r) {
-    let request = ("send?x_value=" + x + "&y_value=" + y + "&r_value=" + r);
+function doRequest(x, y, r, isFromSvg) {
+    let request = ("send?x_value=" + x + "&y_value=" + y + "&r_value=" + r + "&type=" + (isFromSvg ? "svg" : "form"));
     fetch(request)
         .then(response => response.text())
         .then(response => addToTable(response))
@@ -26,7 +26,7 @@ $('svg').on("click", function (e) {
     const r = parseFloat($('#r').val());
     const x = (r / 100 * (rowX - SVG_SIZE / 2)).toFixed(2);
     const y = (r / 100 * (SVG_SIZE / 2 - rowY)).toFixed(2);
-    doRequest(x, y, r);
+    doRequest(x, y, r, true);
 });
 
 function addToTable(response) {

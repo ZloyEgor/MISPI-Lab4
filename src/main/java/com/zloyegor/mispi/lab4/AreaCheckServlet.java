@@ -1,6 +1,8 @@
-package com.example.lab2;
+package com.zloyegor.mispi.lab4;
 
 import com.google.gson.Gson;
+import com.zloyegor.mispi.lab4.management.DotChecker;
+import com.zloyegor.mispi.lab4.management.TimeSpanQualifier;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -23,6 +25,8 @@ public class AreaCheckServlet extends HttpServlet {
         String y = request.getParameter("y_value").replace(",", ".");
         String r = request.getParameter("r_value").replace(",", ".");
 
+        String type = request.getParameter("type");
+
         long time = System.nanoTime();
         boolean valid = validate(x, y, r);
         if (valid) {
@@ -33,6 +37,10 @@ public class AreaCheckServlet extends HttpServlet {
 
             long deltaTime = System.nanoTime() - time;
             Dot dot = new Dot(xValue, yValue, rValue, String.valueOf(deltaTime / 1000000000.), new Timestamp(System.currentTimeMillis()).toString(), result);
+
+            DotChecker.getInstance().process(dot.isResult());
+            if (type.equals("svg"))
+                TimeSpanQualifier.getInstance().process();
 
             HttpSession session = request.getSession();
             ArrayList<Dot> dots = (ArrayList<Dot>) session.getAttribute("dots");
@@ -105,26 +113,5 @@ public class AreaCheckServlet extends HttpServlet {
         return false;
     }
 
-//    public boolean greater_or_eq(String a, String b) {
-//        b = String.valueOf(Double.parseDouble(b) * 10);
-//        if (a.contains(".")) {
-//            a = rtrim(a, "0");
-//            a = rtrim(a, ".");
-//            int dotPos = a.indexOf(".");
-//            char tmp = a.charAt(dotPos);
-//            a[dotPos] = a[dotPos + 1];
-//            a[dotPos + 1] = tmp;
-//            a = rtrim(a, ".");
-//            dotPos++;
-//            if (substr(a, 0, max(0, dotPos)) == b) {
-//                if (substr(a, max(0, dotPos)) == ""){
-//                    return (a[0] == "-");
-//                } else {
-//                    return !(a[0] == "-");
-//                }
-//            }
-//        }
-//        return a >= b;
-//    }
 }
 

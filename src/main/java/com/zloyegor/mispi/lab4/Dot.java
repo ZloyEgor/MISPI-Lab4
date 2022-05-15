@@ -1,4 +1,4 @@
-package com.example.lab2;
+package com.zloyegor.mispi.lab4;
 
 public class Dot {
     private final double x;
